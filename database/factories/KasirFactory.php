@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Auth;
+use App\Models\Cabang;
+use App\Models\Kasir;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +20,13 @@ class KasirFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'id_cabang'     => Cabang::factory(),
+            'id_akun'       => Auth::factory(),
+            'nama_lengkap'  => fake('id_ID')->name(),
+            'tanggal_lahir' => fake()->date(),
+            'jenis_kelamin' => fake()->randomElement([Kasir::GENDER_FEMALE, Kasir::GENDER_MALE]),
+            'alamat'        => fake('id_ID')->address(),
+            'kode_kasir'    => fake()->randomNumber()
         ];
     }
 }

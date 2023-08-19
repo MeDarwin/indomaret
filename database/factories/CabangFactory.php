@@ -21,7 +21,7 @@ class CabangFactory extends Factory
             'id_perusahaan' => Perusahaan::factory(),
             'nama'          => 'indomar' . '-' . fake('id_ID')->city(),
             'kode_cabang'   => fake()->numberBetween(),
-            'kontak_cabang' => fake('id_ID')->phoneNumber(),
+            'kontak_cabang' => fake('id_ID')->e164PhoneNumber(),
             'alamat'        => fake('id_ID')->address()
         ];
     }

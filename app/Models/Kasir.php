@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kasir extends Model
 {
+    const GENDER_MALE = 'L';
+    const GENDER_FEMALE = 'P';
     use HasFactory;
     protected $table = 'kasir';
     protected $primaryKey = 'id_kasir';

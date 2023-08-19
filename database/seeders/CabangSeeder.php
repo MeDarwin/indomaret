@@ -13,6 +13,6 @@ class CabangSeeder extends Seeder
      */
     public function run(): void
     {
-        Cabang::factory(3)->create();
+        Cabang::factory()->create();
     }
 }

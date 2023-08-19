@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('kasir', function (Blueprint $table) {
             $table->id('id_kasir');
-            $table->unsignedBigInteger('id_cabang')->index()->unique()->nullable(false);
+            $table->unsignedBigInteger('id_cabang')->index()->unique();
             $table->unsignedBigInteger('id_akun')->index()->unique()->nullable(false);
             $table->string('nama_lengkap', 100)->nullable(false);
             $table->date('tanggal_lahir')->nullable(false);
