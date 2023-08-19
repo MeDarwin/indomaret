@@ -13,15 +13,13 @@ return new class extends Migration {
         Schema::create('transaksi', function (Blueprint $table) {
             $table->id('id_transaksi');
             $table->unsignedBigInteger('id_kasir')->index()->nullable(false);
-            $table->unsignedBigInteger('id_barang')->index()->nullable(false);
-            $table->unsignedInteger('jumlah_barang')->nullable(false);
-            $table->string('kode_transaksi', 30)->nullable(false); //format : YYYYMMD-HH-ii-s-{id_kasir}
+            $table->unsignedBigInteger('id_pembayaran')->index()->nullable(false);
+            $table->string('kode_transaksi', 30)->nullable(false); //format : YYYYMMD-HH-ii-s-{id_kasir}{id_pembayaran}
             $table->timestamps();
 
             $table->foreign('id_kasir')->references('id_kasir')->on('kasir')
                 ->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreign('id_barang')->references('id_barang')->on('barang')
-                ->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('id_pembayaran')->references('id_pembayaran')->on('pembayaran');
         });
     }
 

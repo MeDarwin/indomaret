@@ -12,11 +12,11 @@ return new class extends Migration {
     {
         Schema::create('cabang', function (Blueprint $table) {
             $table->id('id_cabang');
-            $table->unsignedBigInteger('id_perusahaan')->index();
-            $table->string('nama', 100);
-            $table->string('kode_cabang', 100);
-            $table->string('kontak_cabang', 18);
-            $table->text('alamat');
+            $table->unsignedBigInteger('id_perusahaan')->index()->nullable(false);
+            $table->string('nama', 100)->nullable(false);
+            $table->string('kode_cabang', 100)->nullable(false);
+            $table->string('kontak_cabang', 18)->nullable(false);
+            $table->text('alamat')->nullable(false);
 
             $table->foreign('id_perusahaan')->references('id_perusahaan')->on('perusahaan')
                 ->onDelete('cascade')->onUpdate('cascade');
