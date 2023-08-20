@@ -17,6 +17,6 @@ class Auth extends  Authenticatable
     //RELATION
     public function kasir():HasOne
     {
-        return $this->hasOne(Kasir::class);
+        return $this->hasOne(Kasir::class,'id_akun','id_akun');
     }
 }

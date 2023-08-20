@@ -14,4 +14,14 @@ class Kasir extends Model
     protected $primaryKey = 'id_kasir';
     protected $guarded = ['id_kasir'];
     public $timestamps = false;
+
+    //RELATION
+    public function cabang()
+    {
+        return $this->belongsTo(Cabang::class,'id_cabang','id_cabang');
+    }
+    public function akun()
+    {
+        return $this->belongsTo(Auth::class, 'id_akun', 'id_akun');
+    }
 }
