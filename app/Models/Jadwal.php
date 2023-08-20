@@ -11,7 +11,6 @@ class Jadwal extends Model
     protected $table = 'jadwal';
     protected $primaryKey = 'id_jadwal';
     protected $guarded = ['id_jadwal'];
-    public $timestamps = false;
 
     // RELATION
     public function kasir()
