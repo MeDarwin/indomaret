@@ -17,7 +17,7 @@ class JadwalFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'waktu'=>fake()->dateTime('now','Asia/Jakarta')
         ];
     }
 }

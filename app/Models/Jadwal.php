@@ -12,4 +12,10 @@ class Jadwal extends Model
     protected $primaryKey = 'id_jadwal';
     protected $guarded = ['id_jadwal'];
     public $timestamps = false;
+
+    // RELATION
+    public function kasir()
+    {
+        return $this->belongsTo(Kasir::class, 'id_kasir', 'id_kasir');
+    }
 }
