@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Pembayaran;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,8 @@ class TransaksiFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'id_pembayaran' => Pembayaran::factory(),
+            'kode_transaksi' => fake()->year() . '-' . fake()->month() . '-' . fake()->dayOfMonth() . '-' . fake()->numberBetween(1, 24),
         ];
     }
 }

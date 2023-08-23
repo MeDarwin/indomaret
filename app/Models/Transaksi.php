@@ -12,4 +12,14 @@ class Transaksi extends Model
     protected $primaryKey = 'id_transaksi';
     protected $guarded = ['id_transaksi'];
     public $timestamps = true;
+
+    // RELATION
+    public function pembayaran()
+    {
+        return $this->belongsTo(Pembayaran::class, 'id_pembayaran', 'id_pembayaran');
+    }
+    public function kasir()
+    {
+        return $this->belongsTo(Kasir::class, 'id_kasir', 'id_kasir');
+    }
 }

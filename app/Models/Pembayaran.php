@@ -12,4 +12,10 @@ class Pembayaran extends Model
     protected $primaryKey = 'id_pembayaran';
     protected $guarded = ['id_pembayaran'];
     public $timestamps = false;
+
+    //RELATION
+    public function transaksi()
+    {
+        return $this->hasOne(Transaksi::class, 'id_transaksi', 'id_transaksi');
+    }
 }

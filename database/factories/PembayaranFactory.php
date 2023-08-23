@@ -17,7 +17,9 @@ class PembayaranFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'harga_total'     => fake()->randomDigitNotZero() . fake()->randomElement([fake()->numerify('000'), fake()->numerify('000000')]),
+            'uang_pembayaran' => fake()->randomDigitNotZero() . fake()->randomElement([fake()->numerify('000'), fake()->numerify('000000')]),
+            'uang_kembali'    => fake()->randomDigitNotZero() . fake()->randomElement([fake()->numerify('000'), fake()->numerify('000000')])
         ];
     }
 }

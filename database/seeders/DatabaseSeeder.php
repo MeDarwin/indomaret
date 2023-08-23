@@ -6,9 +6,12 @@ namespace Database\Seeders;
 use App\Models\Auth;
 use App\Models\Barang;
 use App\Models\Cabang;
+use App\Models\Detail_transaksi;
 use App\Models\Jadwal;
 use App\Models\Kasir;
+use App\Models\Pembayaran;
 use App\Models\Perusahaan;
+use App\Models\Transaksi;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -38,7 +41,13 @@ class DatabaseSeeder extends Seeder
                                 ->create(['id_cabang' => $cabang->id_cabang]);
                             Barang::factory()
                                 ->count(10)
-                                ->create(['id_cabang' => $cabang->id_cabang]);
+                                ->create(['id_cabang' => $cabang->id_cabang])//Below is optional
+                                ->each(function (Barang $barang) {
+                                    Detail_transaksi::factory()
+                                        ->count(1)
+                                        ->for(Transaksi::factory()->state(['id_kasir' => 1]),'transaksi')
+                                        ->create(['id_barang' => $barang->id_barang]);
+                                });
                         }
                     );
             }
