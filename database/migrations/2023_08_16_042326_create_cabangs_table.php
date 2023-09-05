@@ -18,8 +18,7 @@ return new class extends Migration {
             $table->string('kontak_cabang', 18)->nullable(false);
             $table->text('alamat')->nullable(false);
 
-            $table->foreign('id_perusahaan')->references('id_perusahaan')->on('perusahaan')
-                ->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_perusahaan')->references('id_perusahaan')->on('perusahaan');
         });
     }
 

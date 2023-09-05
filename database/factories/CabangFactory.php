@@ -18,7 +18,7 @@ class CabangFactory extends Factory
     public function definition(): array
     {
         return [
-            // 'id_perusahaan' => Perusahaan::factory(),
+            'id_perusahaan' => 1,
             'nama'          => 'indomar' . '-' . fake('id_ID')->city(),
             'kode_cabang'   => fake()->numberBetween(),
             'kontak_cabang' => '+628' . fake()->numberBetween(100000000),

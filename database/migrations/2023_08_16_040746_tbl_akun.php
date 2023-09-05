@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id('id_akun');
             $table->string('username', 100)->nullable(false);
             $table->string('password')->nullable(false);
+            $table->enum('role',['kasir','owner','management'])->nullable(false);
         });
     }
 

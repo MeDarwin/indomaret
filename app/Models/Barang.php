@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Barang extends Model
 {
@@ -14,8 +13,8 @@ class Barang extends Model
     protected $guarded = ['id_barang'];
 
     // RELATION
-    public function cabang(): BelongsTo
+    public function stok()
     {
-        return $this->belongsTo(Cabang::class, 'id_cabang', 'id_cabang');
+        return $this->hasMany(Stok::class,'id_barang','id_barang');
     }
 }

@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\BarangController;
+use App\Http\Controllers\CabangController;
+use App\Http\Controllers\PerusahaanController;
+use App\Http\Controllers\StokController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,7 +16,30 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::prefix('/dashboard')->group(
+    function () {
+        // Perusahaan
+        Route::get('/perusahaan', [PerusahaanController::class, 'index']);
+        Route::get('/perusahaan/edit', [PerusahaanController::class, 'edit']);
 
-Route::get('/', function () {
-    return view('welcome');
-});
+        Route::post('/perusahaan/update', [PerusahaanController::class, 'update']);
+        // Cabang
+        Route::get('/cabang', [CabangController::class, 'index']);
+        Route::get('/cabang/insert', [CabangController::class, 'insert']);
+        Route::get('/cabang/detail/{id}', [CabangController::class, 'detail']);
+        Route::get('/cabang/edit/{id}', [CabangController::class, 'edit']);
+
+        Route::post('/cabang/add', [CabangController::class, 'add']);
+        Route::delete('/cabang/delete/{id}', [CabangController::class, 'delete']);
+        // Barang
+        Route::get('/barang', [BarangController::class, 'index']);
+        Route::get('/barang/edit/{id}', [BarangController::class, 'edit']);
+        Route::get('/barang/insert', [BarangController::class, 'insert']);
+
+        Route::post('/barang/add', [BarangController::class, 'add']);
+        Route::delete('/barang/delete/{id}', [BarangController::class, 'delete']);
+        // Stok
+        Route::post('/stok/add/to/{id}/barang/{id_barang}', [StokController::class, 'add']);
+        Route::delete('/stok/delete/from/{id}/barang/{id_barang}', [StokController::class, 'destroy']);
+    }
+);

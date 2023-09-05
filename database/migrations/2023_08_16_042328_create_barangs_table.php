@@ -12,14 +12,9 @@ return new class extends Migration {
     {
         Schema::create('barang', function (Blueprint $table) {
             $table->id('id_barang');
-            $table->unsignedBigInteger('id_cabang')->nullable(false)->index();
             $table->string('nama_barang', 100)->nullable(false);
-            $table->unsignedInteger('harga')->nullable(false);
-            $table->unsignedInteger('stok')->default(0);
+            $table->string('barcode',100)->nullable(false);
             $table->datetimes();
-
-            $table->foreign('id_cabang')->references('id_cabang')->on('cabang')
-                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

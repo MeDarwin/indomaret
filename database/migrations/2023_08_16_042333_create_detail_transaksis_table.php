@@ -18,7 +18,7 @@ return new class extends Migration {
 
             $table->foreign('id_transaksi')->references('id_transaksi')->on('transaksi')
                 ->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreign('id_barang')->references('id_barang')->on('barang')
+            $table->foreign('id_barang')->references('id_barang')->on('stok')
                 ->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
