@@ -58,7 +58,7 @@
             barang</button>
     </div>
     {{-- /* ---------------------------- BTN-SHOW-TAMBAH-BARANG --------------------------- */ --}}
-    <div class="row mt-5">
+    <div class="row row-gap-5 mt-5">
         {{-- /* -------------------------- TAMBAH BARANG  CABANG -------------------------- */ --}}
         <div class=" me-1 col-xl" id="tambah">
             <div class="card p-0">
@@ -93,7 +93,7 @@
         {{-- /* -------------------------- TAMBAH BARANG  CABANG -------------------------- */ --}}
 
         {{-- /* -------------------------- KELOLA BARANG CABANG  -------------------------- */ --}}
-        <div class=" col-xl">
+        <div class="col-xl">
             <div class="card p-0">
                 <div class="card-header">
                     <h1 class="h1 mb-1">Kelola barang cabang</h1>
@@ -113,34 +113,34 @@
                         <tbody>
                             @foreach ($all_available_barang as $s)
                                 <tr>
-                                    <td>
-                                        <div class="row column-gap-2 p-2">
-                                            <input type="text" class="col form-control"
-                                                value="{{ $s->barang->nama_barang }}">
-                                            <button id="btnHapus" class="col-auto btn btn-outline-danger"
+                                    <td class="col-5 col-xxl-auto">
+                                        <div class="row column-gap-2 p-2 px-4">
+                                            <p class="col align-self-center m-0">{{ $s->barang->nama_barang }}</p>
+                                            <button class="btnHapus col-auto btn btn-outline-danger"
                                                 idBarang="{{ $s->barang->id_barang }}"
                                                 namaBarang="{{ $s->barang->nama_barang }}">Delete</button>
                                         </div>
                                     </td>
-                                    <td class="col-1">
-                                        <div class="row column-gap-2 p-2">
-                                            <input type="text" class="form-control" id="stok"
-                                                value="{{ $s->stok }}">
-                                        </div>
-                                    </td>
                                     <td class="col-2">
-                                        <div class="row column-gap-2  p-2">
-                                            <input type="text" class="form-control" value="{{ $s->harga }}">
+                                        <div class="row p-2 px-4">
+                                            <input type="number" class="stok form-control" value="{{ $s->stok }}">
                                         </div>
                                     </td>
-                                    <td class="col-auto">
+                                    <td class="col-3">
+                                        <div class="row input-group p-2 m-0">
+                                            <span class="input-group-text col-auto">Rp.</span>
+                                            <input type="number" class="col form-control" value="{{ $s->harga }}">
+                                        </div>
+                                    </td>
+                                    <td class="col-auto col-lg-3">
                                         <div class="row justify-content-between p-2 px-4">
-                                            <button type="button" class="col-auto btn btn-success" id="tStok"
-                                                title="Tambah stok">
-                                                +
-                                            </button>
-                                            <button type="button" class="col-auto btn btn-danger" id="mStok"
-                                                title="Kurangi stok" idCabang="{{ $s->barang->id_barang }}">
+                                            <button type="button" class="tStok col-auto btn btn-success"
+                                                title="Tambah stok" value="{{ $s->stok }}"
+                                                idBarang="{{ $s->barang->id_barang }}">
+                                                + </button>
+                                            <button type="button" class="mStok col-auto btn btn-danger"
+                                                title="Kurangi stok" value="{{ $s->stok }}"
+                                                idBarang="{{ $s->barang->id_barang }}">
                                                 -
                                             </button>
                                         </div>
@@ -161,14 +161,79 @@
 @endsection
 
 @section('footer')
+    {{-- ! NEEDS TO REFACTOR --}}
     <script type="module">
         let idBarang;
         let namaBarang;
+        // init
+        $('.DataTable-1').dataTable();
+        $('.DataTable-2').dataTable()
+
+        function addToStok(valuetoSend, idBar) {
+            return axios.post(`/dashboard/stok/add/to/{{ $cabang->id_cabang }}/barang/${idBar}`, valuetoSend)
+        }
+
+        //INPUTS
+        $('.tStok').click((e) => {
+            addToStok({
+                stok: ++e.target.value,
+                id_barang: $(e.delegateTarget).attr('idBarang')
+            }).then(({
+                data
+            }) => {
+                data.Success &&
+                    swal.fire({
+                        icon: 'success',
+                        timer: 800,
+                        showConfirmButton: false,
+                        title: 'Stok berhasil ditambahkan'
+                    })
+                $(e.delegateTarget).siblings().val(e.target.value)
+                $(e.delegateTarget).parents().closest('tr').find('.stok').val((e.target.value))
+            }).catch((err) => {
+                --e.target.value //rollback
+                console.error(err)
+                swal.fire({
+                    icon: 'error',
+                    timer: 1000,
+                    showConfirmButton: false,
+                    title: 'Stok gagal ditambahkan'
+                })
+            })
+        })
+        $('.mStok').click((e) => {
+            addToStok({
+                stok: --e.target.value,
+                id_barang: $(e.delegateTarget).attr('idBarang')
+            }).then(({
+                data
+            }) => {
+                data.Success &&
+                    swal.fire({
+                        icon: 'success',
+                        timer: 800,
+                        showConfirmButton: false,
+                        title: 'Stok berhasil dikurangi'
+                    })
+                $(e.delegateTarget).siblings().val(e.target.value)
+                $(e.delegateTarget).parents().closest('tr').find('.stok').val(e.target.value)
+            }).catch((err) => {
+                ++e.target.value //rollback
+                console.error(err)
+                swal.fire({
+                    icon: 'error',
+                    timer: 1000,
+                    showConfirmButton: false,
+                    title: 'Stok gagal ditambahkan'
+                })
+            })
+        })
+
         //hapus barang
-        $('#btnHapus').on('click',
-            () => {
-                namaBarang = $('#btnHapus').attr('namaBarang')
-                idBarang = $('#btnHapus').attr('idBarang')
+        $('.btnHapus').on('click',
+            function() {
+                namaBarang = $(this).attr('namaBarang')
+                idBarang = $(this).attr('idBarang')
                 swal.fire({
                         icon: 'question',
                         title: `Apakah anda yakin untuk menghapus ${namaBarang}`,
@@ -197,7 +262,7 @@
             })
         //tambah barang
         $('.btnTambah').on('click',
-            () => swal.fire({
+            (e) => swal.fire({
                 title: 'Masukkan harga',
                 input: 'number',
                 inputLabel: 'Harga',
@@ -211,14 +276,14 @@
                     value: harga
                 }) =>
                 isConfirmed &&
-                (idBarang = $('.btnTambah').attr('idBarang')) &&
-                axios.post(`/dashboard/stok/add/to/{{ $cabang->id_cabang }}/barang/${idBarang}`, {
-                    harga: harga
-                })
+                axios.post(
+                    `/dashboard/stok/add/to/{{ $cabang->id_cabang }}/barang/${$(e.delegateTarget).attr('idBarang')}`, {
+                        harga: harga
+                    })
                 .then(({
                     data
                 }) => {
-                    data.Success ?
+                    data.Success &&
                         swal.fire({
                             icon: 'success',
                             timer: 2000,
@@ -227,16 +292,7 @@
                         }).finally(function() {
                             //Refresh Halaman
                             location.reload();
-                        }) :
-                        swal.fire({
-                            icon: 'warning',
-                            timer: 2000,
-                            showConfirmButton: false,
-                            title: 'Barang gagal ditambahkan'
-                        }).finally(function() {
-                            //Refresh Halaman
-                            // location.reload();
-                        });
+                        })
                 })
                 .catch((err) => console.error(err))
             )
@@ -246,17 +302,11 @@
             () => {
                 $('.btnShow')
                     .css('display', (i, val) => val == 'block' ? 'none' : 'block')
-                $('#tambah')
-                    .css('display', (i, val) => val == 'block' ? 'none' : 'block')
+                // $('#tambah')
+                //     .css('display', (i, val) => val == 'block' ? 'none' : 'block')
+                $('#tambah').is(':hidden') ?
+                    $('#tambah').slideDown() :
+                    $('#tambah').slideUp()
             })
-        //INPUTS
-        // $('.DataTable-2').on('blur', '#stok', () => alert('stok blur work')) 
-        // $('.DataTable-2').on('input', '#stok',
-        // ({
-        // target
-        // }) => console.log(target.innerText))
-        // init
-        $('.DataTable-1').dataTable();
-        $('.DataTable-2').dataTable()
     </script>
 @endsection

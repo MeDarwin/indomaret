@@ -55,7 +55,10 @@ class CabangController extends Controller
         $this->req = $request;
         $data = [
             'cabang'               => Cabang::query()->firstWhere('id_cabang', $request->id),
-            'all_unadded_barang'   => Barang::with('stok')->doesntHave('stok')->orWhereRelation('stok','id_cabang','<>',$request->id)->get(['*']),//! need to fix
+            'all_unadded_barang'   =>
+            Barang::with('stok')->whereDoesntHave('stok', function (Builder $q) {
+                $q->where('id_cabang', '=', $this->req->id);
+            })->get(['*']), //? solution
             'all_available_barang' => Stok::with('barang')->whereRelation('barang', 'id_cabang', $request->id)->get(['*']),
         ];
         // return $data;
