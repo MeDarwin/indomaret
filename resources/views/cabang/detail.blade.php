@@ -114,7 +114,7 @@
                         </thead>
                         <tbody>
                             @foreach ($all_available_barang as $s)
-                                <tr>
+                                <tr idBarang="{{ $s->barang->id_barang }}">
                                     <td class="col-5 col-xxl-auto">
                                         <div class="row column-gap-2 p-2 px-4">
                                             <p class="col align-self-center text-capitalize m-0">
@@ -126,13 +126,15 @@
                                     </td>
                                     <td class="col-2">
                                         <div class="row p-2 px-4">
-                                            <input type="number" class="stok form-control" value="{{ $s->stok }}">
+                                            <input type="number" class="stok form-control" placeholder="stok"
+                                                value="{{ $s->stok }}">
                                         </div>
                                     </td>
                                     <td class="col-3">
                                         <div class="row input-group p-2 m-0">
                                             <span class="input-group-text col-auto">Rp.</span>
-                                            <input type="number" class="col form-control" value="{{ $s->harga }}">
+                                            <input type="number" class="harga col form-control" placeholder="harga"
+                                                value="{{ $s->harga }}">
                                         </div>
                                     </td>
                                     <td class="col-auto col-lg-3">
@@ -228,6 +230,61 @@
                     timer: 1000,
                     showConfirmButton: false,
                     title: 'Stok gagal ditambahkan'
+                })
+            })
+        })
+        $('.harga').blur(function() {
+            // console.log($(this).attr('value'))
+            queryToStok({
+                harga: $(this).val(),
+                id_barang: $(this).parents().closest('tr').attr('idBarang')
+            }).then(({
+                data
+            }) => {
+                data.Success &&
+                    swal.fire({
+                        icon: 'success',
+                        timer: 800,
+                        showConfirmButton: false,
+                        title: 'Harga berhasil diupdate'
+                    })
+                $(this).attr('value', $(this).val()) //change value attr to match database record
+            }).catch((err) => {
+                console.error(err)
+                $(this).val($(this).attr('value')) //rollback to prevent mismatch
+                swal.fire({
+                    icon: 'error',
+                    timer: 1000,
+                    showConfirmButton: false,
+                    title: 'Harga gagal diupdate'
+                })
+            })
+        })
+        $('.stok').blur(function() {
+            queryToStok({
+                stok: $(this).val(),
+                id_barang: $(this).parents().closest('tr').attr('idBarang')
+            }).then(({
+                data
+            }) => {
+                data.Success &&
+                    swal.fire({
+                        icon: 'success',
+                        timer: 800,
+                        showConfirmButton: false,
+                        title: 'Stok berhasil diupdate'
+                    })
+                $(this).parents().closest('tr').find('.tStok').val($(this).val())
+                $(this).parents().closest('tr').find('.mStok').val($(this).val())
+                $(this).attr('value', $(this).val()) //change value attr to match database record
+            }).catch((err) => {
+                console.error(err)
+                $(this).val($(this).attr('value')) //rollback to prevent mismatch
+                swal.fire({
+                    icon: 'error',
+                    timer: 1000,
+                    showConfirmButton: false,
+                    title: 'Stok gagal diupdate'
                 })
             })
         })
