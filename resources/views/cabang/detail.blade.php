@@ -4,7 +4,7 @@
     {{-- @csrf --}}
 
     {{-- /* -------------------------- CABANG SECTION -------------------------- */ --}}
-    <div class="row">
+    <div class="row mb-5">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
@@ -52,15 +52,17 @@
         </div>
     </div>
     {{-- /* -------------------------- CABANG SECTION -------------------------- */ --}}
+
     {{-- /* ---------------------------- BTN-SHOW-TAMBAH-BARANG --------------------------- */ --}}
     <div>
-        <button class="btnClose btnShow btn btn-outline-dark m-0 mt-5 text-wrap" style="display: none">Tambah
+        <button class="btnClose btnShow btn btn-outline-dark m-0 mb-3 text-wrap" style="display: none">Tambah
             barang</button>
     </div>
     {{-- /* ---------------------------- BTN-SHOW-TAMBAH-BARANG --------------------------- */ --}}
-    <div class="row row-gap-5 mt-5">
+
+    <div class="row row-gap-5 mb-5">
         {{-- /* -------------------------- TAMBAH BARANG  CABANG -------------------------- */ --}}
-        <div class=" me-1 col-xl" id="tambah">
+        <div class=" me-1 col-xl-5" id="tambah">
             <div class="card p-0">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h1 class="h1">Tambah barang cabang</h1>
@@ -77,7 +79,7 @@
                         <tbody>
                             @foreach ($all_unadded_barang as $a)
                                 <tr>
-                                    <td>{{ $a->nama_barang }}</td>
+                                    <td class="text-capitalize">{{ $a->nama_barang }}</td>
                                     <td class="d-flex justify-content-center">
                                         <button class="btnTambah btn btn-primary"
                                             idBarang={{ $a->id_barang }}>Tambah</button>
@@ -115,7 +117,8 @@
                                 <tr>
                                     <td class="col-5 col-xxl-auto">
                                         <div class="row column-gap-2 p-2 px-4">
-                                            <p class="col align-self-center m-0">{{ $s->barang->nama_barang }}</p>
+                                            <p class="col align-self-center text-capitalize m-0">
+                                                {{ $s->barang->nama_barang }}</p>
                                             <button class="btnHapus col-auto btn btn-outline-danger"
                                                 idBarang="{{ $s->barang->id_barang }}"
                                                 namaBarang="{{ $s->barang->nama_barang }}">Delete</button>
@@ -169,13 +172,13 @@
         $('.DataTable-1').dataTable();
         $('.DataTable-2').dataTable()
 
-        function addToStok(valuetoSend, idBar) {
+        function queryToStok(valuetoSend, idBar) {
             return axios.post(`/dashboard/stok/add/to/{{ $cabang->id_cabang }}/barang/${idBar}`, valuetoSend)
         }
 
         //INPUTS
         $('.tStok').click((e) => {
-            addToStok({
+            queryToStok({
                 stok: ++e.target.value,
                 id_barang: $(e.delegateTarget).attr('idBarang')
             }).then(({
@@ -202,7 +205,7 @@
             })
         })
         $('.mStok').click((e) => {
-            addToStok({
+            queryToStok({
                 stok: --e.target.value,
                 id_barang: $(e.delegateTarget).attr('idBarang')
             }).then(({
@@ -295,15 +298,13 @@
                         })
                 })
                 .catch((err) => console.error(err))
-            )
-        )
+            ))
         //close btn
         $('.btnClose').on('click',
             () => {
-                $('.btnShow')
-                    .css('display', (i, val) => val == 'block' ? 'none' : 'block')
-                // $('#tambah')
-                //     .css('display', (i, val) => val == 'block' ? 'none' : 'block')
+                $('.btnShow').is(':hidden') ?
+                    $('.btnShow').slideDown() :
+                    $('.btnShow').slideUp()
                 $('#tambah').is(':hidden') ?
                     $('#tambah').slideDown() :
                     $('#tambah').slideUp()
