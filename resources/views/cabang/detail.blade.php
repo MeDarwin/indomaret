@@ -3,7 +3,7 @@
 @section('content')
     {{-- @csrf --}}
 
-    {{-- /* -------------------------- CABANG SECTION -------------------------- */ --}}
+    {{-- /* -------------------------- HEADER -------------------------- */ --}}
     <div class="row mb-5">
         <div class="col-md-12">
             <div class="card">
@@ -51,7 +51,7 @@
             </div>
         </div>
     </div>
-    {{-- /* -------------------------- CABANG SECTION -------------------------- */ --}}
+    {{-- /* -------------------------- HEADER -------------------------- */ --}}
 
     {{-- /* ---------------------------- BTN-SHOW-TAMBAH-BARANG --------------------------- */ --}}
     <div>
@@ -91,7 +91,6 @@
                 </div>
             </div>
         </div>
-
         {{-- /* -------------------------- TAMBAH BARANG  CABANG -------------------------- */ --}}
 
         {{-- /* -------------------------- KELOLA BARANG CABANG  -------------------------- */ --}}
@@ -179,10 +178,11 @@
         }
 
         //INPUTS
-        $('.tStok').click((e) => {
+        $('.DataTable-2').on('click', '.tStok', function() {
+            let stok = $(this).closest('.tStok').val()
             queryToStok({
-                stok: ++e.target.value,
-                id_barang: $(e.delegateTarget).attr('idBarang')
+                stok: ++stok,
+                id_barang: $(this).closest('tr').find('.tStok').attr('idBarang')
             }).then(({
                 data
             }) => {
@@ -193,10 +193,11 @@
                         showConfirmButton: false,
                         title: 'Stok berhasil ditambahkan'
                     })
-                $(e.delegateTarget).siblings().val(e.target.value)
-                $(e.delegateTarget).parents().closest('tr').find('.stok').val((e.target.value))
+                $(this).closest('.tStok').val(stok)
+                $(this).closest('.tStok').siblings().val(stok)
+                $(this).closest('tr').find('.stok').val(stok)
             }).catch((err) => {
-                --e.target.value //rollback
+                --stok //rollback
                 console.error(err)
                 swal.fire({
                     icon: 'error',
@@ -206,10 +207,11 @@
                 })
             })
         })
-        $('.mStok').click((e) => {
+        $('.DataTable-2').on('click', '.mStok', function() {
+            let stok = $(this).closest('.mStok').val()
             queryToStok({
-                stok: --e.target.value,
-                id_barang: $(e.delegateTarget).attr('idBarang')
+                stok: --stok,
+                id_barang: $(this).closest('tr').find('.mStok').attr('idBarang')
             }).then(({
                 data
             }) => {
@@ -220,24 +222,25 @@
                         showConfirmButton: false,
                         title: 'Stok berhasil dikurangi'
                     })
-                $(e.delegateTarget).siblings().val(e.target.value)
-                $(e.delegateTarget).parents().closest('tr').find('.stok').val(e.target.value)
+                $(this).closest('.mStok').val(stok)
+                $(this).closest('.mStok').siblings().val(stok)
+                $(this).closest('tr').find('.stok').val(stok)
             }).catch((err) => {
-                ++e.target.value //rollback
+                ++stok //rollback
                 console.error(err)
                 swal.fire({
                     icon: 'error',
                     timer: 1000,
                     showConfirmButton: false,
-                    title: 'Stok gagal ditambahkan'
+                    title: 'Stok gagal dikurangi'
                 })
             })
         })
-        $('.harga').blur(function() {
+        $('.DataTable-2').on('blur', '.harga', function() {
             // console.log($(this).attr('value'))
             queryToStok({
                 harga: $(this).val(),
-                id_barang: $(this).parents().closest('tr').attr('idBarang')
+                id_barang: $(this).closest('tr').attr('idBarang')
             }).then(({
                 data
             }) => {
@@ -260,10 +263,10 @@
                 })
             })
         })
-        $('.stok').blur(function() {
+        $('.DataTable-2').on('blur', '.stok', function() {
             queryToStok({
                 stok: $(this).val(),
-                id_barang: $(this).parents().closest('tr').attr('idBarang')
+                id_barang: $(this).closest('tr').attr('idBarang')
             }).then(({
                 data
             }) => {
@@ -290,10 +293,10 @@
         })
 
         //hapus barang
-        $('.btnHapus').on('click',
+        $('.DataTable-2').on('click', '.btnHapus',
             function() {
-                namaBarang = $(this).attr('namaBarang')
-                idBarang = $(this).attr('idBarang')
+                namaBarang = $(this).closest('.btnHapus').attr('namaBarang')
+                idBarang = $(this).closest('.btnHapus').attr('idBarang')
                 swal.fire({
                         icon: 'question',
                         title: `Apakah anda yakin untuk menghapus ${namaBarang}`,
@@ -321,7 +324,7 @@
                     .catch((err) => console.error(error))
             })
         //tambah barang
-        $('.btnTambah').on('click',
+        $('.DataTable-1').on('click', '.btnTambah',
             (e) => swal.fire({
                 title: 'Masukkan harga',
                 input: 'number',
@@ -337,7 +340,7 @@
                 }) =>
                 isConfirmed &&
                 axios.post(
-                    `/dashboard/stok/add/to/{{ $cabang->id_cabang }}/barang/${$(e.delegateTarget).attr('idBarang')}`, {
+                    `/dashboard/stok/add/to/{{ $cabang->id_cabang }}/barang/${$(e.delegateTarget).find('.btnTambah').attr('idBarang')}`, {
                         harga: harga
                     })
                 .then(({
@@ -346,7 +349,7 @@
                     data.Success &&
                         swal.fire({
                             icon: 'success',
-                            timer: 2000,
+                            timer: 800,
                             showConfirmButton: false,
                             title: 'Barang berhasil ditambahkan'
                         }).finally(function() {

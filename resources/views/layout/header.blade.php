@@ -18,10 +18,14 @@
                     </li>
                 </ul>
                 @auth
-                    <div class="row align-items-center">
-                        <div class="col-auto text-white">Hello, {{ Auth::user()->username }}</div>
+                    <div class="row align-items-center column-gap-5">
+                        <div class="col-auto text-white">
+                                <div class="row w-auto fs-5">Hello, {{ Auth::user()->username }}</div>
+                                <div class="row w-auto fs-6 text-capitalize">{{ Auth::user()['role'] }}</div>
+                        </div>
                         <div class="col">
-                            <a class="btn btn-sm btn-outline-danger" href="{{ url('auth', ['logout']) }}" type="button">Logout</a>
+                            <a class="btn btn-sm btn-outline-danger" href="{{ url('auth', ['logout']) }}"
+                                type="button">Logout</a>
                         </div>
                     </div>
                 @endauth
