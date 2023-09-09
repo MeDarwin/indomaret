@@ -17,6 +17,14 @@
                         <a class="nav-link" href="{{ url('/dashboard') }}/barang">Barang</a>
                     </li>
                 </ul>
+                @auth
+                    <div class="row align-items-center">
+                        <div class="col-auto text-white">Hello, {{ Auth::user()->username }}</div>
+                        <div class="col">
+                            <a class="btn btn-sm btn-outline-danger" href="{{ url('auth', ['logout']) }}" type="button">Logout</a>
+                        </div>
+                    </div>
+                @endauth
             </div>
         </div>
     </nav>

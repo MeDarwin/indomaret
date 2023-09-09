@@ -19,8 +19,9 @@ class AuthFactory extends Factory
     public function definition(): array
     {
         return [
-            'username' => fake('id_ID')->name(),
+            'username' => fake('id_ID')->userName(),
             'password' => Hash::make('password123'),
+            'role'     => fake()->randomElement(['owner', 'kasir', 'management'])
         ];
     }
 }

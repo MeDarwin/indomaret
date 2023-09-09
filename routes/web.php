@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\CabangController;
 use App\Http\Controllers\PerusahaanController;
@@ -16,7 +17,11 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::prefix('/dashboard')->group(
+Route::get('/login',[AuthController::class,'index'])->name('login');
+Route::post('/auth/login',[AuthController::class,'login']);
+Route::get('/auth/logout',[AuthController::class,'logout']);
+
+Route::prefix('/dashboard')->middleware(['auth'])->group(
     function () {
         // Perusahaan
         Route::get('/perusahaan', [PerusahaanController::class, 'index']);
