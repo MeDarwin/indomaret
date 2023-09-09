@@ -25,7 +25,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
         return $isLoggedIn
             ? redirect(RouteServiceProvider::HOME)
-            : redirect('login')->with('Failed', 'Login Failed');
+            : redirect()->back()->with('Failed', 'Login Failed');
     }
     public function logout()
     {

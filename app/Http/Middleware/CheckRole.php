@@ -10,11 +10,13 @@ class CheckRole
 {
     /**
      * Handle an incoming request.
-     *
+     * Check the allowed role of routes
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, ...$role): Response
     {
-        return $next($request);
+        return in_array($request->user()['role'], $role)
+            ? $next($request)
+            : abort(redirect()->back()->with('Warning', 'Unauthorized action! Calling 911.'));
     }
 }
