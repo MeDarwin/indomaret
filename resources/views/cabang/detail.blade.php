@@ -54,15 +54,15 @@
     {{-- /* -------------------------- HEADER -------------------------- */ --}}
 
     {{-- /* ---------------------------- BTN-SHOW-TAMBAH-BARANG --------------------------- */ --}}
-    <div>
+    {{-- <div>
         <button class="btnClose btnShow btn btn-outline-dark m-0 mb-3 text-wrap" style="display: none">Tambah
             barang</button>
-    </div>
+    </div> --}}
     {{-- /* ---------------------------- BTN-SHOW-TAMBAH-BARANG --------------------------- */ --}}
 
     <div class="row row-gap-5 mb-5">
         {{-- /* -------------------------- TAMBAH BARANG  CABANG -------------------------- */ --}}
-        <div class=" me-1 col-xl-5" id="tambah">
+        {{-- <div class=" me-1 col-xl-5" id="tambah">
             <div class="card p-0">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h1 class="h1">Tambah barang cabang</h1>
@@ -90,7 +90,7 @@
                     </table>
                 </div>
             </div>
-        </div>
+        </div> --}}
         {{-- /* -------------------------- TAMBAH BARANG  CABANG -------------------------- */ --}}
 
         {{-- /* -------------------------- KELOLA BARANG CABANG  -------------------------- */ --}}
@@ -118,9 +118,6 @@
                                         <div class="row column-gap-2 p-2 px-4">
                                             <p class="col align-self-center text-capitalize m-0">
                                                 {{ $s->barang->nama_barang }}</p>
-                                            <button class="btnHapus col-auto btn btn-outline-danger"
-                                                idBarang="{{ $s->barang->id_barang }}"
-                                                namaBarang="{{ $s->barang->nama_barang }}">Delete</button>
                                         </div>
                                     </td>
                                     <td class="col-2">
@@ -293,6 +290,7 @@
         })
 
         //hapus barang
+        /**
         $('.DataTable-2').on('click', '.btnHapus',
             function() {
                 namaBarang = $(this).closest('.btnHapus').attr('namaBarang')
@@ -369,5 +367,6 @@
                     $('#tambah').slideDown() :
                     $('#tambah').slideUp()
             })
+        **/
     </script>
 @endsection
