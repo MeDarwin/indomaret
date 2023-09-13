@@ -18,8 +18,8 @@ class BarangController extends Controller
     }
     public function edit(Request $request)
     {
-        $data = ['barang'=>Barang::query()->firstWhere('id_barang',$request->id)];
-        return view('barang.edit',$data);
+        $data = ['barang' => Barang::query()->firstWhere('id_barang', $request->id)];
+        return view('barang.edit', $data);
     }
     public function add()
     {
@@ -29,8 +29,11 @@ class BarangController extends Controller
         ]);
         if ($validated) {
             $id = request()->only('id_barang');
+            $update = Barang::find($id)->first();
+            if ($update)
+                $update->fill($validated);
             return $id
-                ? (Barang::query()->where('id_barang', $id)->update($validated)
+                ? ($update->save()
                     ? redirect('/dashboard/barang')->with('Success', 'Barang edited')
                     : redirect('/dashboard/barang/edit')->with('Failed', 'Barang failed to edit'))
                 : (Barang::create($validated)
@@ -40,7 +43,7 @@ class BarangController extends Controller
     }
     public function delete(Request $request)
     {
-        $deleted = Barang::query()->find($request->id,'id_barang')->delete();
+        $deleted = Barang::query()->find($request->id, 'id_barang')->delete();
         return $deleted ? response()->json(['Success' => true]) : response()->json(['Success' => false]);
     }
 }
